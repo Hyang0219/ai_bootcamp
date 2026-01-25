@@ -210,3 +210,5 @@ __marimo__/
 data/
 
 qdrant_storage/
+.DS_Store
+documentation/development-environment/

@@ -1,45 +1,35 @@
-# ai-engineering-bootcamp-prerequisites
+## ai-engineering-bootcamp-prerequisites
 
-Welcome to the prerequisites repository for the [End-to-End AI Engineering Bootcamp](https://maven.com/swirl-ai/end-to-end-ai-engineering)! This repository is dedicated to setting up your development environment and scafoling a simple project with a StreamLit UI frontend service decoupled from FastAPI server.
+This repository bootstraps the [End-to-End AI Engineering Bootcamp](https://maven.com/swirl-ai/end-to-end-ai-engineering). It wires together:
+- a **FastAPI backend** that runs a RAG pipeline (Qdrant + OpenAI) and exposes `/rag` for querying;
+- a **Streamlit UI** that calls that API, shows chat history, and displays LangSmith evaluation results;
+- supporting scripts/notebooks for Qdrant ingestion, evaluation dataset creation, and LangSmith experiments.
 
-We strongly recomend you coding along the videos available on Maven platform rather than just cloning the repository and running the code.
+### Key setup notes
+1. Copy the template and add API keys:
+   ```bash
+   cp env.example .env
+   ```
+   Then fill `.env` with your OpenAI / Groq / Google keys, plus LangSmith credentials (project/endpoint/API key).
 
-If you do need to run the code, this is how:
+2. Start everything with Docker:
+   ```bash
+   make run-docker-compose
+   ```
+   - FastAPI listens on `http://localhost:8000`.
+   - Streamlit is at `http://localhost:8501`.
+   - Qdrant persists vectors under `./qdrant_storage`, so you can restart the stack without losing your collection.
 
-- Clone the repository.
-- Run:
-```bash
-cp env.example .env
-```
+3. Dataset / evaluation workflow:
+   - Use `notebooks/week_1/04-evaluation-dataset.ipynb` (corrected to write `question`) to create `rag-evaluation-dataset-v3` in LangSmith.
+   - Run `apps/api/evals/eval_retriever.py` against that dataset to log LangSmith experiments. The evaluator now gracefully skips runs with missing chunks but scores every valid retriever output.
 
-Edit `.env` and add your API keys:
+4. LangSmith tracing:
+   - Each function in `apps/api/src/api/agents/retrieval_generation.py` is decorated with `@traceable`. LangSmith captures embeddings, prompt construction, and the overall `rag_pipeline`.
+   - Set `LANGSMITH_PROJECT`, `LANGSMITH_ENDPOINT`, and `LANGSMITH_API_KEY` in `.env` so traces land in the right project.
 
-```
-OPENAI_API_KEY=your_google_api_key
-GOOGLE_API_KEY=your_google_api_key
-GROQ_API_KEY=your_groq_api_key
-```
-Keep the remaining configuration as per ```.env.example```.
+### Tidying things up
+- `documentation/development-environment` and `qdrant_storage` are excluded in `.gitignore`.
+- Hidden files such as `.DS_Store` are ignored as well.
 
-
-#### To run the project, execute:
-
-```bash
-make run-docker-compose
-```
-
-Streamlit application: http://localhost:8501
-
-FastAPI documentation: http://localhost:8000/docs
-
-
-
-## Contact
-
-If you have any questions, feel free to contact me via aurimas@swirlai.com
-
-You can also find me on:
-
-- 🔗 [LinkedIn](https://www.linkedin.com/in/aurimas-griciunas)
-- 🔗 [X](https://x.com/Aurimas_Gr)
-- 🔗 [Newsletter](https://www.newsletter.swirlai.com/)
+Once everything is running and the dataset is rebuilt, you can inspect LangSmith’s “Precision/Recall,” “Faithfulness,” and “Response Relevancy” metrics under the `rag-evaluation-dataset-v3` project.

@@ -1,8 +1,7 @@
 from fastapi import Request, APIRouter
 from api.api.models import RAGRequest, RAGResponse, RAGUsedContext
-from qdrant_client import QdrantClient
 
-from api.agents.retrieval_generation import rag_pipeline_wrapper
+from api.agents.graph import rag_agent_wrapper
 
 import logging
 
@@ -20,7 +19,7 @@ def rag(
     payload: RAGRequest
 ) -> RAGResponse:
 
-    answer = rag_pipeline_wrapper(payload.query)
+    answer = rag_agent_wrapper(payload.query)
 
     return RAGResponse(
         request_id=request.state.request_id,

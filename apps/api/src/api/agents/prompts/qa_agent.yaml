@@ -28,11 +28,21 @@ prompts:
     CRITICAL: All parameters must go inside the "arguments" object, not at the top level of the tool call.
 
     Examples:
-    Get formatted item context:
+    - Get formatted item context:
     {
       "name": "get_formatted_item_context",
       "arguments": {
         "query": "Kool kids toys",
+        "top_k": 5
+      }
+    }
+
+    - Get formatted reviews context:
+    {
+      "name": "get_formatted_reviews_context",
+      "arguments": {
+        "query": "Durable",
+        "item_list": ["123", "456"],
         "top_k": 5
       }
     }

@@ -1,3 +1,4 @@
+<!-- README.md -->
 # End-to-End AI Engineering Bootcamp
 
 This repository contains the code and course materials for the [End-to-End AI Engineering Bootcamp](https://maven.com/swirl-ai/end-to-end-ai-engineering). It is designed to be a comprehensive guide to building production-ready AI applications, featuring a full-stack RAG (Retrieval-Augmented Generation) application and a series of educational notebooks.
@@ -9,6 +10,10 @@ The project is structured as a monorepo containing a modern AI application stack
 *   **Frontend**: A [Streamlit](https://streamlit.io/) chatbot interface (`apps/chatbot_ui`) for interacting with the RAG pipeline.
 *   **Backend**: A [FastAPI](https://fastapi.tiangolo.com/) service (`apps/api`) that handles retrieval, generation, and orchestration.
 *   **Vector Database**: [Qdrant](https://qdrant.tech/) for storing and searching vector embeddings.
+*   **State / Checkpointing**: Postgres (LangGraph checkpoint store).
+*   **MCP Servers (optional)**: Two [FastMCP](https://github.com/jlowin/fastmcp) servers for tool calls in Week 4 notebooks:
+    *   `apps/items_mcp_server` (items retrieval)
+    *   `apps/reviews_mcp_server` (reviews retrieval)
 *   **Observability**: Integrated with [LangSmith](https://www.langchain.com/langsmith) for tracing, monitoring, and evaluation.
 *   **Package Management**: Uses [uv](https://github.com/astral-sh/uv) for fast and reliable Python package management.
 
@@ -18,11 +23,14 @@ The project is structured as a monorepo containing a modern AI application stack
 .
 ├── apps/
 │   ├── api/            # FastAPI backend service
-│   └── chatbot_ui/     # Streamlit frontend application
+│   ├── chatbot_ui/     # Streamlit frontend application
+│   ├── items_mcp_server/   # MCP server (items tools)
+│   └── reviews_mcp_server/ # MCP server (reviews tools)
 ├── notebooks/          # Educational notebooks organized by curriculum
 │   ├── prerequisites/  # Intro to LLM APIs
 │   ├── week_1/         # RAG foundations: Ingestion, Pipeline, Evals
-│   └── week_2/         # Advanced RAG: Hybrid Search, Reranking, Structured Outputs
+│   ├── week_2/         # Advanced RAG: Hybrid Search, Reranking, Structured Outputs
+│   └── week_4/         # Agents + LangGraph + MCP + streaming
 ├── docker-compose.yml  # Container orchestration
 ├── Makefile            # Convenience commands
 ├── pyproject.toml      # Project dependencies and configuration
@@ -72,9 +80,17 @@ make run-docker-compose
 This will build the images and start the services:
 *   **Streamlit UI**: [http://localhost:8501](http://localhost:8501)
 *   **FastAPI Backend**: [http://localhost:8000](http://localhost:8000) (Docs at [/docs](http://localhost:8000/docs))
+*   **RAG streaming endpoint**: `POST http://localhost:8000/rag/` (SSE: `text/event-stream`)
 *   **Qdrant Dashboard**: [http://localhost:6333/dashboard](http://localhost:6333/dashboard)
+*   **Items MCP server**: `http://localhost:8001/mcp`
+*   **Reviews MCP server**: `http://localhost:8002/mcp`
 
 *Note: Qdrant data is persisted in the `./qdrant_storage` directory.*
+
+### Troubleshooting
+
+- **`POST /rag` returns 307 redirect**: the FastAPI route is mounted at `/rag/` (trailing slash). Prefer calling `POST /rag/` directly for streaming clients.
+- **Notebooks after code changes**: if you edit helper modules (e.g. `utils.py`), restart the Jupyter kernel or reload the module to avoid import caching.
 
 ### Running Notebooks
 

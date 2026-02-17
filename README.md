@@ -107,17 +107,35 @@ To explore the course materials interactively:
 
 ## 📚 Curriculum Overview
 
+### Prerequisites
+- **LLM APIs** (`notebooks/prerequisites/01-llm-apis.ipynb`): calling LLMs, basic prompting, and setup.
+
 ### Week 1: Foundations of RAG
-*   **Exploratory Data Analysis**: Understanding the Amazon dataset.
-*   **Preprocessing**: Cleaning and preparing data for vectorization.
-*   **Pipeline Construction**: Building a basic RAG retrieval and generation flow.
-*   **Evaluation**: Creating synthetic datasets and evaluating RAG performance using RAGAS/LangSmith.
+- **Explore Amazon dataset** (`notebooks/week_1/01-explore-amazon-dataset.ipynb`)
+- **Preprocessing** (`notebooks/week_1/02-RAG-preprocessing-Amazon.ipynb`)
+- **RAG pipeline** (`notebooks/week_1/03-RAG-pipeline.ipynb`)
+- **Evaluation dataset** (`notebooks/week_1/04-evaluation-dataset.ipynb`)
+- **RAG evals** (`notebooks/week_1/05-RAG-evals.ipynb`)
 
 ### Week 2: Advanced RAG Techniques
-*   **Structured Outputs**: Forcing LLMs to return JSON/Pydantic models.
-*   **Hybrid Search**: Combining dense vectors with sparse (BM25) keyword search.
-*   **Reranking**: Improving retrieval quality with Cohere rerankers.
-*   **Prompt Engineering**: Versioning and managing prompts as code.
+- **Structured Outputs intro** (`notebooks/week_2/01-Structured-Outputs-Intro.ipynb`)
+- **Structured Outputs + RAG pipeline** (`notebooks/week_2/02-Structured_Outputs-RAG-pipeline.ipynb`)
+- **Hybrid search** (`notebooks/week_2/03-Hybrid-Search.ipynb`)
+- **Reranking** (`notebooks/week_2/04-Reranking.ipynb`)
+- **Prompt versioning** (`notebooks/week_2/05-Prompt-Versioning.ipynb`)
+
+### Week 3: Agents & LangGraph Foundations
+- **LangGraph intro** (`notebooks/week_3/01-LangGraph-Intro.ipynb`)
+- **Query rewriting** (`notebooks/week_3/02-Query-Rewriting.ipynb`)
+- **Routing** (`notebooks/week_3/03-Router.ipynb`)
+- **Single-turn agent** (`notebooks/week_3/04-Agent-Single-Turn.ipynb`)
+
+### Week 4: Multi-tool Agents, MCP, and Streaming
+- **Multi-turn agent** (`notebooks/week_4/01-Multi-turn-Agent.ipynb`)
+- **Multiple tools** (`notebooks/week_4/02-Multiple-Tools.ipynb`)
+- **Human feedback** (`notebooks/week_4/03-Human-Feedback.ipynb`)
+- **MCP** (`notebooks/week_4/04-MCP.ipynb`)
+- **Streaming state** (`notebooks/week_4/05-Streaming-State.ipynb`)
 
 ## 🛠️ Development
 
